@@ -46,7 +46,4 @@ def find_random_user():
 
 
 if __name__ == "__main__":
-    requests.get("http://127.0.0.1:8000/add?name=TestName&surname=TestSurname")
-    with open(f'../{global_param.FILE}', 'r') as csv_file:
-        list_of_user = list(csv.reader(csv_file))
-    print(list_of_user[-1][1], list_of_user[-1][2])
+    pass

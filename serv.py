@@ -17,10 +17,8 @@ def csv_reader():
     result = []
     try:
         with open(global_param.FILE, "r") as csv_file:
-            reader = csv.reader(csv_file)
-            for row in reader:
-                result.append(row)
-        return result
+            reader = tuple(csv.reader(csv_file))
+        return reader
     except:
         return result
 
@@ -168,6 +166,11 @@ def method(id: int):
         return f'User with id={id} successfully deleted'
     else:
         return delete_status
+
+
+@app.post('/')
+def method():
+    pass
 
 
 if __name__ == "__main__":
