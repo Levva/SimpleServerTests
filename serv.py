@@ -36,6 +36,7 @@ def csv_writer(some_data):
                 else:
                     row['id'] = int(csv_reader()[-1][0]) + 1
                 writer.writerow(row)
+            csv_file.close()
         return True
     except:
         return False

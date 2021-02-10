@@ -2,6 +2,7 @@ import pytest
 import requests
 import os
 import sys
+import csv
 from test_serv import locators
 from serv import global_param
 
@@ -12,6 +13,13 @@ def locked_file():
     print("Lock acquired")
     yield file
     file.close()
+
+
+@pytest.fixture()
+def get_last_user():
+    with open(f'{global_param.FILE}', 'r') as csv_file:
+        list_of_user = list(csv.reader(csv_file))
+    return list_of_user[-1][1], list_of_user[-1][2]
 
 
 @pytest.fixture(scope='function')
@@ -31,12 +39,14 @@ def rename_users_file():
 
 @pytest.fixture(scope='function')
 def find_random_user():
-    for i in range(1, sys.maxsize):
-        response = requests.get(f'{locators.links.GET_USER}id={i}')
-        if response.text != f'"Could not find user with id={i}"':
-            return i
-        else:
-            i += 1
+    import random
+    with open(f'{global_param.FILE}', 'r') as csv_file:
+        list_of_user = random.choice(list(csv.reader(csv_file)))
+    return random.choice(list_of_user[0])
+
 
 if __name__ == "__main__":
-    pass
+    requests.get("http://127.0.0.1:8000/add?name=TestName&surname=TestSurname")
+    with open(f'../{global_param.FILE}', 'r') as csv_file:
+        list_of_user = list(csv.reader(csv_file))
+    print(list_of_user[-1][1], list_of_user[-1][2])

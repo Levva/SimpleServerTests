@@ -65,8 +65,8 @@ def test_get_user_9(rename_users_file, find_random_user):
     assert response_get_user == f'No users have been added yet', f'Response is: "{response_get_user}"'
 
 
-def test_get_user_10(locked_file, find_random_user):
-    id = find_random_user
+def test_get_user_10(locked_file, find_existing_user):
+    id = find_existing_user
     try:
         response_get_user = some_func.give_me_json(f'{locators.links.GET_USER}id={id}')
         assert len(response_get_user) > 0, f'Response is: "{response_get_user}"'
