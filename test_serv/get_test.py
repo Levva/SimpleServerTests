@@ -6,19 +6,18 @@ import sys
 
 def test_get_user_1(add_user, find_random_user):
     id = find_random_user
-    response_get_user = json.loads(some_func.give_me_json(f'{locators.links.GET_USER}id={id}'))
-    print(response_get_user)
-    assert len(response_get_user) > 0, f'Response is: "{response_get_user}"'
+    response_get_user = some_func.give_me_json(f'{locators.links.GET_USER}id={id}')
+    assert response_get_user[1] == 200 and len(response_get_user[0]) > 0, f'Response is: "{response_get_user}"'
 
 
-def test_get_user_2(find_random_user):
-    id = find_random_user
-    try:
-        response_get_user = json.loads(some_func.give_me_json(f'{locators.links.GET_USER}id={id}'))
-        assert len(response_get_user) > 0, f'Response is: "{response_get_user}"'
-    except:
-        response_get_user = some_func.give_me_json(f'{locators.links.GET_USER}id={id}')
-        assert response_get_user == f'Could not find user with id={id}', f'Response is: "{response_get_user}"'
+# def test_get_user_2(find_random_user):
+#     id = find_random_user
+#     try:
+#         response_get_user = json.loads(some_func.give_me_json(f'{locators.links.GET_USER}id={id}'))
+#         assert len(response_get_user) > 0, f'Response is: "{response_get_user}"'
+#     except:
+#         response_get_user = some_func.give_me_json(f'{locators.links.GET_USER}id={id}')
+#         assert response_get_user == f'Could not find user with id={id}', f'Response is: "{response_get_user}"'
 
 
 def test_get_user_3():
@@ -65,13 +64,14 @@ def test_get_user_9(rename_users_file, find_random_user):
     assert response_get_user == f'No users have been added yet', f'Response is: "{response_get_user}"'
 
 
-def test_get_user_10(locked_file, find_existing_user):
-    id = find_existing_user
+def test_get_user_10(locked_file, find_random_user):
+    id = find_random_user
     try:
-        response_get_user = some_func.give_me_json(f'{locators.links.GET_USER}id={id}')
-        assert len(response_get_user) > 0, f'Response is: "{response_get_user}"'
+        some_func.give_me_json(f'{locators.links.GET_USER}id={id}')
     except Exception as type:
         assert type.__class__ == PermissionError, f'Exception is: "{type.__class__}"'
+    else:
+        assert False, 'Permission Exception not found!'
 
 
 def test_get_user_11(find_random_user):

@@ -15,13 +15,6 @@ def locked_file():
     file.close()
 
 
-@pytest.fixture()
-def get_last_user():
-    with open(f'{global_param.FILE}', 'r') as csv_file:
-        list_of_user = list(csv.reader(csv_file))
-    return list_of_user[-1][1], list_of_user[-1][2]
-
-
 @pytest.fixture(scope='function')
 def add_user():
     requests.get(f'{locators.links.ADD_USER}name=test&surname=test')

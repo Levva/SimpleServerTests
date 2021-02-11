@@ -1,39 +1,39 @@
 from test_serv import locators
 from test_serv.some_func import give_me_json
-import csv
-import requests
+from test_serv.some_func import get_last_user
 
 
-def test_add_user_positive(get_last_user):
+def test_add_user_positive():
     name = 'test name 1'
     surname = 'test surname 2'
     response_added = give_me_json(f'{locators.links.ADD_USER}name={name}&surname={surname}')
-    response = get_last_user
-    assert response_added[1] == 200 and response[0] == name and response[1] == surname, \
-        f'Response is: "{response_added}"'
+    last_user = get_last_user()
+    print()
+    assert response_added[1] == 200 and last_user[1] == name and last_user[2] == surname, \
+        f'Response is: "{response_added}", last_user[1]="{last_user[1]}", last_user[2]="{last_user[2]}"'
 
 
 def test_add_user_missing_surname():
     name = 'test_name 2'
-    response_add_user = give_me_json(f'{locators.links.ADD_USER}name={name}')
-    assert response_add_user[0] == '2 required parameters are expected: name and surname', \
-        f'Response is: "{response_add_user}"'
+    response_added = give_me_json(f'{locators.links.ADD_USER}name={name}')
+    assert response_added[0] == '2 required parameters are expected: name and surname', \
+        f'Response is: "{response_added}"'
 
 
 def test_add_user_missing_name():
     surname = 'test_name 3'
-    response_add_user = give_me_json(f'{locators.links.ADD_USER}surname={surname}')
-    assert response_add_user[0] == '2 required parameters are expected: name and surname', \
-        f'Response is: "{response_add_user}"'
+    response_added = give_me_json(f'{locators.links.ADD_USER}surname={surname}')
+    assert response_added[0] == '2 required parameters are expected: name and surname', \
+        f'Response is: "{response_added}"'
 
 
 def test_add_user_missing_name_surname():
-    response_add_user = give_me_json(f'{locators.links.ADD_USER}')
-    assert response_add_user[0] == '2 required parameters are expected: name and surname', \
-        f'Response is: "{response_add_user}"'
+    response_added = give_me_json(f'{locators.links.ADD_USER}')
+    assert response_added[0] == '2 required parameters are expected: name and surname', \
+        f'Response is: "{response_added}"'
 
 
-def test_add_user_long_name(get_last_user):
+def test_add_user_long_name():
     name = '''Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam auctor nulla sed sem bibendum
     dictum. Sed viverra ante nulla, quis tincidunt urna sagittis ut. Cras mollis vel est et ultrices. 
     Praesent id nisl a erat dapibus interdum. Curabitur tempor est ac lorem finibus, eget vulputate augue 
@@ -53,13 +53,13 @@ def test_add_user_long_name(get_last_user):
     finibus arcu. Nullam consectetur leo vitae tortor interdum, ac porttitor urna semper. Nunc vel semper 
     lacus. In a. '''
     surname = 'test surname'
-    response_successfully_added = give_me_json(f'{locators.links.ADD_USER}name={name}&surname={surname}')
-    response = get_last_user
-    assert response_successfully_added[1] == 200 and response[0] == name and response[1] == surname, \
-        f'Response is: "{response_successfully_added}"'
+    response_added = give_me_json(f'{locators.links.ADD_USER}name={name}&surname={surname}')
+    last_user = get_last_user()
+    assert response_added[1] == 200 and last_user[1] == name and last_user[2] == surname, \
+        f'Response is: "{response_added}", last_user[1]="{last_user[1]}", last_user[2]="{last_user[2]}"'
 
 
-def test_add_user_6(get_last_user):
+def test_add_user_long_surname():
     name = 'test name'
     surname = '''Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam auctor nulla sed sem bibendum
     dictum. Sed viverra ante nulla, quis tincidunt urna sagittis ut. Cras mollis vel est et ultrices. 
@@ -79,13 +79,13 @@ def test_add_user_6(get_last_user):
     Pellentesque id placerat mi. Vestibulum eget vehicula tellus. Curabitur eu scelerisque libero, et 
     finibus arcu. Nullam consectetur leo vitae tortor interdum, ac porttitor urna semper. Nunc vel semper 
     lacus. In a. '''
-    response_successfully_added = give_me_json(f'{locators.links.ADD_USER}name={name}&surname={surname}')
-    response = get_last_user
-    assert response_successfully_added[1] == 200 and response[0] == name and response[1] == surname, \
-        f'Response is: "{response_successfully_added}"'
+    response_added = give_me_json(f'{locators.links.ADD_USER}name={name}&surname={surname}')
+    last_user = get_last_user()
+    assert response_added[1] == 200 and last_user[1] == name and last_user[2] == surname, \
+        f'Response is: "{response_added}", last_user[1]="{last_user[1]}", last_user[2]="{last_user[2]}"'
 
 
-def test_add_user_7(get_last_user):
+def test_add_user_long_name_surname():
     name = '''Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam auctor nulla sed sem bibendum
     dictum. Sed viverra ante nulla, quis tincidunt urna sagittis ut. Cras mollis vel est et ultrices. 
     Praesent id nisl a erat dapibus interdum. Curabitur tempor est ac lorem finibus, eget vulputate augue 
@@ -122,35 +122,20 @@ def test_add_user_7(get_last_user):
     Pellentesque id placerat mi. Vestibulum eget vehicula tellus. Curabitur eu scelerisque libero, et 
     finibus arcu. Nullam consectetur leo vitae tortor interdum, ac porttitor urna semper. Nunc vel semper 
     lacus. In a. '''
-    response_successfully_added = give_me_json(f'{locators.links.ADD_USER}name={name}&surname={surname}')
-    response = get_last_user
-    assert response_successfully_added[1] == 200 and response[0] == name and response[1] == surname, \
-        f'Response is: "{response_successfully_added}"'
+    response_added = give_me_json(f'{locators.links.ADD_USER}name={name}&surname={surname}')
+    last_user = get_last_user()
+    assert response_added[1] == 200 and last_user[1] == name and last_user[2] == surname, \
+        f'Response is: "{response_added}", last_user[1]="{last_user[1]}", last_user[2]="{last_user[2]}"'
 
 
-def test_add_user_8(locked_file, get_last_user):
+def test_add_user_file_is_locked(locked_file):
     name = 'test name 8'
     surname = 'test surname 8'
-    response_successfully_added = give_me_json(f'{locators.links.ADD_USER}name={name}&surname={surname}')
-    response = get_last_user
-    assert response_successfully_added[1] == 200 and response[0] == name and response[1] == surname, \
-        f'Response is: "{response_successfully_added}"'
+    response_added = give_me_json(f'{locators.links.ADD_USER}name={name}&surname={surname}')
+    last_user = get_last_user()
+    assert response_added[1] == 200 and last_user[1] == name and last_user[2] == surname, \
+        f'Response is: "{response_added}", last_user[1]="{last_user[1]}", last_user[2]="{last_user[2]}"'
 
 
 if __name__ == "__main__":
-    def get_last_user():
-        with open(f'../bs.csv', 'r') as csv_file:
-            list_of_user = list(csv.reader(csv_file))
-        return list_of_user[-1][1], list_of_user[-1][2]
-
-
-    requests.get(f'{locators.links.ADD_USER}name=test&surname=test')
-
-    name = 'test name 1'
-    surname = 'test surname 2'
-    response_successfully_added = give_me_json(f'{locators.links.ADD_USER}name={name}&surname={surname}')
-    print(response_successfully_added)
-    response = get_last_user()
-    print(response)
-    assert response_successfully_added[1] == 200 and response[0] == name and response[1] == surname, \
-        f'Response is: "{response_successfully_added}"'
+    pass
