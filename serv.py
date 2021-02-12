@@ -1,12 +1,15 @@
-
+from pydantic import BaseModel
+from typing import Optional
 from fastapi import FastAPI
 import uvicorn
 import json
 import csv
 
+
 class global_param:
     FILE = 'bs.csv'
     FIELDNAMES = ['id', 'name', 'surname']
+
 
 '''
 methods of server
@@ -126,6 +129,23 @@ def csv_update(some_data):
 app = FastAPI()
 
 
+class Item(BaseModel):
+    name: str
+    surname: str
+    bool_value: Optional[bool] = None
+
+
+@app.post("/items/{item_id}")
+def update_item(item_id: int, item: Item):
+    return {"Name": item.name, "Surname": item.surname, "item_id": item_id}
+
+
+@app.post('/add')
+def method(**kwargs):
+    for arg in kwargs:
+        return arg
+
+
 @app.get('/add')
 def method(name: str = '', surname: str = ''):
     if not (name and surname):
@@ -174,5 +194,4 @@ def method():
 
 
 if __name__ == "__main__":
-
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000, log_level='info')
